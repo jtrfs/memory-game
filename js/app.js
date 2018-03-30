@@ -23,6 +23,7 @@ let NumberOfCards;
 
 let seconds = 0;
 let timing;
+let newTiming; // timing after restart
 //let secondsCounter;
 //===================================
 //   a list of CARDS to play with    
@@ -288,7 +289,7 @@ $restart.on('click', function () {
 
     matchCheck()
 
-    console.log('.......... ~ HAS BEEN RESTARTED ~')
+    console.log('.......... ~ IT HAS BEEN RESTARTED ~')
 
     addListener(); // problems with multiplying clicks solved by .off(), line 315
 });
@@ -301,15 +302,26 @@ $restart.on('click', function () {
 function timingClock() {
     if (timing) {
         $deck.off('click');
+        clearInterval(timing);
+        seconds = 0;
+
+        $deck.one('click', 'li', function() { 
+            $(this).data('clicked', true);
+            if($(this).data('clicked')) {
+                timing = setInterval(secondsCounter, 1000);
+                resetTimer(timing);
+            }
+            console.log('.......... ~ BEING TIMED AFTER RESTART ~');
+        });
+
     } else {
         $deck.one('click', 'li', function() { 
             $(this).data('clicked', true);
             if($(this).data('clicked')) {
-                secondsCounter();
                 timing = setInterval(secondsCounter, 1000);
                 resetTimer(timing);
-                console.log('.......... ~ CLICKED TO START ~');
             }
+            console.log('.......... ~ STARTED BY CLICK AND BEING TIMED ~');
         });
     }   
 }     
@@ -325,45 +337,6 @@ function resetTimer(timing) {
 
     }
 }
-
-
-
-
-// function timingClock() {
-//     $deck.one('click', 'li', function() { 
-//             $(this).data('clicked', true);
-//             if($(this).data('clicked')) {
-//                 secondsCounter();
-//                 timing = setInterval(secondsCounter, 1000);
-//                 resetTimer(timing);
-//                 console.log('.......... ~ CLICKED TO START ~');
-//             }
-//             //timing = setInterval(secondsCounter, 1000); // nefungovalo to protoze to bylo s let 
-//             // function secondsCounter() {
-//             //     $('.timer').text(`${seconds}`);
-//             //      seconds++;
-//             // }
-//             // resetTimer(timing);
-        
-//     });
-// }
-
-
-// function timingClock() {
-//     $deck.one('click', 'li', function() { 
-//         if (timing) {
-//             console.log('timing is running after restart!')
-//         } else {
-//             $(this).data('clicked', true);
-//             if($(this).data('clicked')) {
-//                 secondsCounter();
-//                 timing = setInterval(secondsCounter, 1000);
-//                 resetTimer(timing);
-//                 console.log('.......... ~ CLICKED TO START ~');
-//             }
-//         }
-//     });
-// }
 
 
 });
