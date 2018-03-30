@@ -18,6 +18,9 @@ $moves.text(moves); // initial value of the counter set to 0
 // Scoring system from 1 to 3 stars
 let stars2, stars1, stars0, score;
 
+let matched;
+let NumberOfCards;
+
 let seconds = 0;
 let timing;
 //let secondsCounter;
@@ -113,6 +116,9 @@ $deck.on('click', 'li', function() {
 
     // now I want to check if there are 2 cards with the same symbol
     matchCheck();
+    if (timing) {
+            //console.log('timing is running in AddListener!')
+        }
     });
 
 }
@@ -150,6 +156,9 @@ addListener();
         //finalScore(); // it's here just for testing
 
         resetTimer(timing);
+
+        //console.log('Number of matches: ' + matched);
+        //console.log('Number of cards: ' + NumberOfCards);
 
     }
 }
@@ -257,23 +266,11 @@ function finalScore() {
     }
 }
 
-
 //========================
 //     RESTART the game 
 //========================
 
-// function unbind() {
-//     // $restart.on('click', function(){
-//         $deck.off('click', 'li', addListener);
-//         // $('.deck li').off('click', addListener);
-//         //alert('hi');
-//     // });
-// }
-
-
 $restart.on('click', function () {
-
-    //unbind();
 
     $rating.removeClass('fa-star-o').addClass('fa-star');
     $('.match').removeClass('match').addClass('unmatched');
@@ -282,7 +279,6 @@ $restart.on('click', function () {
     $moves.text(0);
     moves = 0;
     $timer.text(0);
-    timing = 0;
 
     $('#stars-modal').empty(); // in order not to multiply the stars
 
@@ -294,7 +290,7 @@ $restart.on('click', function () {
 
     console.log('.......... ~ HAS BEEN RESTARTED ~')
 
-    addListener();
+    addListener(); // problems with multiplying clicks solved by .off(), line 315
 });
 
 //====================
@@ -303,27 +299,72 @@ $restart.on('click', function () {
 // called above, line 66
 
 function timingClock() {
-    $deck.one('click', 'li', function() { 
+    if (timing) {
+        $deck.off('click');
+    } else {
+        $deck.one('click', 'li', function() { 
+            $(this).data('clicked', true);
+            if($(this).data('clicked')) {
+                secondsCounter();
+                timing = setInterval(secondsCounter, 1000);
+                resetTimer(timing);
+                console.log('.......... ~ CLICKED TO START ~');
+            }
+        });
+    }   
+}     
 
-        $(this).data('clicked', true);
-        if($(this).data('clicked')) {
-            secondsCounter();
-            console.log('.......... ~ CLICKED TO START ~');
-        }
-        timing = setInterval(secondsCounter, 1000); // nefungovalo to protoze to bylo s let 
-        function secondsCounter() {
-            $('.timer').text(`${seconds}`);
-             seconds++;
-        }
-        resetTimer(timing);
-    });
+function secondsCounter() {
+    $('.timer').text(`${seconds}`);
+     seconds++;
 }
 
 function resetTimer(timing) {
     if ($('.deck li.match').length === 16) {
             clearInterval(timing);
+
     }
 }
+
+
+
+
+// function timingClock() {
+//     $deck.one('click', 'li', function() { 
+//             $(this).data('clicked', true);
+//             if($(this).data('clicked')) {
+//                 secondsCounter();
+//                 timing = setInterval(secondsCounter, 1000);
+//                 resetTimer(timing);
+//                 console.log('.......... ~ CLICKED TO START ~');
+//             }
+//             //timing = setInterval(secondsCounter, 1000); // nefungovalo to protoze to bylo s let 
+//             // function secondsCounter() {
+//             //     $('.timer').text(`${seconds}`);
+//             //      seconds++;
+//             // }
+//             // resetTimer(timing);
+        
+//     });
+// }
+
+
+// function timingClock() {
+//     $deck.one('click', 'li', function() { 
+//         if (timing) {
+//             console.log('timing is running after restart!')
+//         } else {
+//             $(this).data('clicked', true);
+//             if($(this).data('clicked')) {
+//                 secondsCounter();
+//                 timing = setInterval(secondsCounter, 1000);
+//                 resetTimer(timing);
+//                 console.log('.......... ~ CLICKED TO START ~');
+//             }
+//         }
+//     });
+// }
+
 
 });
 
