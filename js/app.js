@@ -325,8 +325,6 @@ function resetTimer(timing) {
     }
 }
 
-
-
 });
 
 
