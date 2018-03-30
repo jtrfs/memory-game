@@ -1,0 +1,229 @@
+html {
+    box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    font-family: 'Coda', cursive;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+h1 {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+}
+
+/*
+ * Styles for the deck of cards
+ */
+
+.deck {
+    width: 660px;
+    min-height: 680px;
+    background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
+    padding: 32px;
+    border-radius: 10px;
+    box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 0 3em;
+}
+
+.deck .card {
+    height: 125px;
+    width: 125px;
+    background: #2e3d49;
+    font-size: 0;
+    color: #ffffff;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
+}
+
+/*.deck .card.open {
+    transform: rotateY(0);
+    background: #02b3e4;
+    cursor: default;
+}*/
+
+/*.deck .card.show {
+    font-size: 50px;
+    color: #333;
+    text-shadow: 
+        5px 5px 15px rgba(255, 255, 255, 0.3), 
+        1px 1px 1px orange,
+        -2px -2px 2px black;
+}*/
+
+.deck .card.selected {
+    font-size: 3em;
+    background: #02b3e4;
+    color: #333;
+    text-shadow: 
+        1px 1px 2px white,
+        -1px -1px 2px white;
+}
+
+.deck .card.match {
+    cursor: default;
+    background: #02ccba;
+    font-size: 3em;
+    text-shadow: 
+        5px 5px 15px black;
+}
+
+/*
+ * Styles for the Score Panel
+ */
+
+.score-panel {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-around;
+
+    position: relative;
+    /*text-align: left;*/
+    width: calc(100% - (100% - 660px));
+    margin-bottom: 10px;
+    /*border: 1px solid red;*/
+}
+
+#no-stars {
+    color: red;
+    font-weight: bold;
+}
+
+.score-panel .stars {
+    /*border: 1px solid blue;*/
+    padding: 0;
+    margin: 0;
+}
+
+.score-panel .stars li {
+    list-style: none;
+    display: inline-block;
+    /*border: 1px solid green;*/
+}
+
+
+.fa-star {
+    color: #f7d205;
+    font-size: 1.4em;
+    letter-spacing: 4px;
+    /*border: 1px solid blue;*/
+}
+
+.fa-repeat {
+    color: black;
+    /*border: 1px solid blue;*/
+}
+
+.score-panel .restart {
+ /*   position: absolute;
+    right: 0;
+    top: 0;*/
+    /*flex-grow: 1;*/
+   /* margin-left: auto;
+    margin-right: auto;*/
+    font-size: 1.5em;
+    cursor: pointer;
+    /*text-shadow: 4px 4px 30px black, -4px -4px 30px black;*/
+    /*transition: 
+        transform 0.5s;*/
+}
+
+.score-panel .restart:hover {
+    /*transform: scale(1.5);*/
+}
+
+.timer, .moves {
+    margin-left: 10px;
+    display: inline-block;
+    text-align: right;
+    min-width: 50px;
+    font-weight: bold;
+    font-size: 1.4em;
+    /*border: 1px solid red;*/
+}
+
+/* **************************** */
+/*            MODAL             */
+/* ******************************/
+.modal-section {
+    position: relative;
+    top: 45%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-section .modal {
+    position: absolute;
+    display: none;
+    z-index: 10;
+    
+    height: 100%; /*bez toho nefungovalo top, right ... u modal-close*/
+    
+    box-sizing: border-box;
+    text-align: center;
+    padding: 30px;
+
+    /*top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    */
+    border-radius: 10px;
+    /*opacity: 0.8;*/
+
+    background-color: #eee;
+    border: 2px solid #333;
+    color: #333;
+    font-size: 1.5em;
+    height: 400px;
+    width: 700px;
+}
+
+.fa-times-circle-o {
+    color: #333;
+}
+
+.modal-close {
+    position: absolute;
+    right: 19px;
+    top: 10px;
+    font-size: 1.2em;
+    /*color: #333;*/
+    cursor: pointer;
+    text-shadow: 1px 1px 6px gray;
+}
+
+.modal-close:hover {
+    text-shadow: 1px 1px 6px #eee;
+    color: #222;
+}
+
