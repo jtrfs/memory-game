@@ -97,9 +97,9 @@ h1 {
         5px 5px 15px black;
 }
 
-/*
- * Styles for the Score Panel
- */
+/* **************************** */
+/*          SCORE PANEL         */
+/* ******************************/
 
 .score-panel {
     display: flex;

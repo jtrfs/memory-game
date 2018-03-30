@@ -8,8 +8,9 @@ $symbol = $('li.card i'); // a symbol/font-awesome for a given card
 $card = $('li.card'); // a card: all of the 16 <li> elements
 $restart = $('.score-panel .restart'); // a button to restart the game
 $deck = $('.deck'); // the whole board of the 16 cards
-$moves = $('.moves'); // the moves counter
-$rating = $('.fa'); // the stars rating
+$moves = $('.moves'); // the moves counter above the deck
+$rating = $('.fa'); // the stars rating above the deck
+$timer = $('.timer'); // the timer above the deck
 
 let moves = 0;
 $moves.text(moves); // initial value of the counter set to 0
@@ -112,8 +113,7 @@ $deck.on('click', 'li', function() {
 
     // now I want to check if there are 2 cards with the same symbol
     matchCheck();
-
-});
+    });
 
 }
 
@@ -129,13 +129,13 @@ addListener();
         let firstSelected = $('.selected').first().children().attr('class').split(' ');
         let secondSelected = $('.selected').last().children().attr('class').split(' ');
         if (firstSelected[1] === secondSelected[1]) {
-            console.log('MATCHED');
+            console.log('.......... ~ MATCHED ~');
             setTimeout(function () {
                 $('.selected').removeClass('selected unmatched');
             }, 500);
             $('.selected').addClass('match');
         } else {
-            console.log('MISSED');
+            console.log('.......... ~ MISSED ~');
             setTimeout(function () {
                 $('.selected').removeClass('selected');
             }, 500);
@@ -149,9 +149,8 @@ addListener();
 
         //finalScore(); // it's here just for testing
 
-        console.log('match je: '+ $('.deck li.match').length)
-
         resetTimer(timing);
+
     }
 }
 
@@ -230,7 +229,7 @@ function finalScore() {
     let $oneStar = $('<span class="stars-modal"><i class="fa fa-star"></i></span>');
     let $twoStars = $('<span class="stars-modal"><i class="fa fa-star"></i><i class="fa fa-star"></i></span>');
     let $threeStars = $('<span class="stars-modal"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>');
-    let $statement = $('#completion');
+    let $statement = $('#onCompletion');
     let $starsInMOdal = $('#stars-modal');
     let $congrats = $('#congrats');
 
@@ -262,25 +261,41 @@ function finalScore() {
 //========================
 //     RESTART the game 
 //========================
-    $restart.on('click', function () {
-    
-        $rating.removeClass('fa-star-o').addClass('fa-star');
-        $('.match').removeClass('match').addClass('unmatched');
-        $('.selected').removeClass('selected');
-        $('#no-stars').text('');
-        $moves.text(0);
-        moves = 0;
 
-        $('#stars-modal').empty();
+// function unbind() {
+//     // $restart.on('click', function(){
+//         $deck.off('click', 'li', addListener);
+//         // $('.deck li').off('click', addListener);
+//         //alert('hi');
+//     // });
+// }
 
-        init();
-        matchCheck()
 
-        console.log('HAS BEEN RESTARTED')
+$restart.on('click', function () {
 
-        addListener();
+    //unbind();
 
-    });
+    $rating.removeClass('fa-star-o').addClass('fa-star');
+    $('.match').removeClass('match').addClass('unmatched');
+    $('.selected').removeClass('selected'); // when player wants to start again after one card has been clicked
+    $('#no-stars').text('');
+    $moves.text(0);
+    moves = 0;
+    $timer.text(0);
+    timing = 0;
+
+    $('#stars-modal').empty(); // in order not to multiply the stars
+
+    timingClock();
+
+    init();
+
+    matchCheck()
+
+    console.log('.......... ~ HAS BEEN RESTARTED ~')
+
+    addListener();
+});
 
 //====================
 //       TIMER
@@ -288,100 +303,27 @@ function finalScore() {
 // called above, line 66
 
 function timingClock() {
-    $deck.one('click', 'li', function() {
+    $deck.one('click', 'li', function() { 
 
         $(this).data('clicked', true);
         if($(this).data('clicked')) {
             secondsCounter();
-            console.log('CLICKED TO START');
+            console.log('.......... ~ CLICKED TO START ~');
         }
-        let timing = setInterval(secondsCounter, 1000);
+        timing = setInterval(secondsCounter, 1000); // nefungovalo to protoze to bylo s let 
         function secondsCounter() {
             $('.timer').text(`${seconds}`);
              seconds++;
         }
-        //resetTimer(timing);
-        console.log('wait is: ' + wait);
+        resetTimer(timing);
     });
 }
 
-// //// TODO !!!!!!!!!!
-// function resetTimer(timer) {
-//      // if (timer && ($('.deck li.match').length === 16) {
-//         clearInterval(timer);
-//         //console.log($('.deck li.match').length);
-//      // }
-// }
-// resetTimer(timing);
-
-let wait = $('.timer').text();
 function resetTimer(timing) {
     if ($('.deck li.match').length === 16) {
-        setTimeout(function() {
             clearInterval(timing);
-            $('.timer').text(0);
-            console.log('match is 16, stop the clock. UAAAA!');
-        }, wait); // na tu hodnotu musi pockat az bude znama na konci!!!!! ted je tam 0
     }
 }
-
-
-
-// function resetTimer(timer) {
-//     if (timing) {
-//             clearInterval(timing);
-//             $('.timer').text(0);
-//             console.log('match is 16, stop the clock. UAAAA!');
-//     }
-// }
-
-
-
-
-
-
-//////////// tohle funguje ////////////////
-
-// let timing = setInterval(secondsCounter, 1000);
-// function secondsCounter() {
-//     $('.timer').text(`${seconds}`);
-//     seconds++;
-// }
-// secondsCounter();
-
-// function resetTimer(timer) {
-//     if (timer) {
-//         setTimeout(function() {
-//         clearInterval(timer);
-//         $('.timer').text(0);
-//         }, 5000);
-//     }
-// }
-// resetTimer(timing);
-
-////////////////////////////////////////////
-
-
-// function timing() {
-//     $deck.one('click', 'li', function() {
-
-//         $(this).data('clicked', true);
-//         if($(this).data('clicked')) {
-//             secondsCounter();
-//             console.log('CLICKED TO START');
-//         }
-//         let timer = setInterval(secondsCounter, 1000);
-//         function secondsCounter() {
-//             $('.timer').text(`${seconds}`);
-//              seconds++;
-//         }
-//     });
-// }
-
-
-
-
-
 
 
 
