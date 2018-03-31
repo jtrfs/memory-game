@@ -4,6 +4,7 @@
         <meta charset="utf-8">
         <title>Matching Game</title>
         <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
         <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
         <link rel="stylesheet" href="css/app.css">
@@ -15,12 +16,14 @@
 <!-- ====================================== -->
         <section class="modal-section">
             <div id="ex1" class="modal">
-                <div class="modal-close">
-                    <i class="fa fa-times-circle-o"></i>
+                <div class="flexbox-modal-items">
+                    <div class="modal-close">
+                        <i class="fa fa-times-circle-o"></i>
+                    </div>
+                    <p id="congrats"></p>
+                    <p id="stars-modal"></p>
+                    <p id="onCompletion"></p>
                 </div>
-                <p id="congrats"></p>
-                <p id="stars-modal"></p>
-                <p id="onCompletion"></p>
             </div>
         </section>
 
@@ -33,15 +36,15 @@
                 <h1>Matching Game</h1>
             </header>
             <section class="score-panel">
-                <ul class="stars">
+                <ul class="stars box">
                     <li id="no-stars"></li>
                     <li><i class="fa fa-star"></i></li>
                     <li><i class="fa fa-star"></i></li>
                     <li><i class="fa fa-star"></i></li>
                 </ul>
-                <div><span class="moves"></span> moves</div>
-                <div><span class="timer">0</span> <span>s</span></div>
-                <div class="restart">
+                <div class="box"><span class="moves"></span> moves</div>
+                <div class="box"><span class="timer">0</span> <span>s</span></div>
+                <div class="restart box">
                     <i class="fa fa-repeat"></i>
                 </div>
             </section>

@@ -23,8 +23,7 @@ let NumberOfCards;
 
 let seconds = 0;
 let timing;
-let newTiming; // timing after restart
-//let secondsCounter;
+
 //===================================
 //   a list of CARDS to play with    
 //===================================
@@ -96,7 +95,6 @@ function init() {
 }
 
 init();
-// timing();
 
 // ========================================
 //   AddEventListener/delegation - CLICK
@@ -117,9 +115,7 @@ $deck.on('click', 'li', function() {
 
     // now I want to check if there are 2 cards with the same symbol
     matchCheck();
-    if (timing) {
-            //console.log('timing is running in AddListener!')
-        }
+
     });
 
 }
@@ -154,7 +150,7 @@ addListener();
 
         starRating(moves);
 
-        //finalScore(); // it's here just for testing
+        //finalScore(); // it's here just for testing to see the modal earlier
 
         resetTimer(timing);
 
@@ -338,6 +334,8 @@ function resetTimer(timing) {
     }
 }
 
+// just to apply some CSS to see what's what
+// $('.score-panel').children().css({'border': '1px solid red', 'font-size': '1.4em'});
 
 });
 
