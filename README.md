@@ -4,7 +4,10 @@
 
 The Memory Game Project is all about demonstrating the student's mastery of HTML, CSS, and JavaScript. He or she will build a complete browser-based card matching game (also known as Concentration).
 
+***
+
 ![alt screenshot of the game](https://jtrfs.github.io/memory-game/img/memory_game.png)
+
 
 # Udacity specification:
 
