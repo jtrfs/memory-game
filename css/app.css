@@ -244,8 +244,12 @@ h1, .score-panel {
     }
 
     .deck {
-        /*height: 95vh;*/
-        padding: 5%;
+        height: 95vh;
+        padding: 1%;
+    }
+
+    .deck .card {
+        margin: 1%;
     }
 
     .heading-one {
