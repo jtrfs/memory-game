@@ -1,34 +1,32 @@
+/*jshint esversion: 6 */
 
 $(document).ready(function() {
 //=============================
-//       some VARIABLES            
+//       some VARIABLES
 //=============================
 
-$symbol = $('li.card i'); // a symbol/font-awesome for a given card
-$card = $('li.card'); // a card: all of the 16 <li> elements
-$restart = $('.score-panel .restart'); // a button to restart the game
-$deck = $('.deck'); // the whole board of the 16 cards
-$moves = $('.moves'); // the moves counter above the deck
-$rating = $('.fa'); // the stars rating above the deck
-$timer = $('.timer'); // the timer above the deck
+const $symbol = $('li.card i'); // a symbol/font-awesome for a given card
+const $card = $('li.card'); // a card: all of the 16 <li> elements
+const $deck = $('.deck'); // the whole board of the 16 cards
+const $moves = $('.moves'); // the moves counter above the deck
+const $rating = $('.fa'); // the stars rating above the deck
+const $timer = $('.timer'); // the timer above the deck
 
 let moves = 0;
 $moves.text(moves); // initial value of the counter set to 0
 
 // Scoring system from 1 to 3 stars
-let stars2, stars1, stars0, score;
-
+let stars2, stars1, score;
 let matched;
 let NumberOfCards;
-
 let seconds = 0;
 let timing;
 
 //===================================
-//   a list of CARDS to play with    
+//   a list of CARDS to play with
 //===================================
 
-let cards = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'anchor', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube'];
+const cards = ['diamond', 'paper-plane-o', 'anchor', 'bolt', 'cube', 'anchor', 'leaf', 'bicycle', 'diamond', 'bomb', 'leaf', 'bomb', 'bolt', 'bicycle', 'paper-plane-o', 'cube'];
 
 // displays all the cards to be viewed
 function displayCards() {
@@ -45,7 +43,7 @@ displayCards();
 
 
 //==================================
-//       SHUFFLE THE CARDS  
+//       SHUFFLE THE CARDS
 //==================================
 
 function shuffle(array) {
@@ -53,7 +51,6 @@ function shuffle(array) {
     let i = array.length, 
         random, 
         temp;
-
     while (--i > 0) {
         random = Math.floor(Math.random() * (i + 1));
         temp = array[random];
@@ -75,10 +72,8 @@ function init() {
     $symbol.each(function(index) {
         $(this).removeClass().addClass('fa'); // fa is required for the font-awesome
     });
-
     // reshuffles the cards
     let shuffledCards = shuffle(cards);
-
     // LOOP through each card to assign the symbols/classes
     let idx = 0;
     $symbol.each(function(index) {
@@ -91,7 +86,6 @@ function init() {
                 idx = 0;
             }
     });
-    
 }
 
 init();
@@ -109,15 +103,11 @@ $deck.on('click', 'li', function() {
     let secondClass = classes.slice(1)[0].slice(3);
     // console.log(classes);
     console.log(secondClass);
-
     // to display the clicked symbol on the deck
     $(this).addClass('selected');
-
     // now I want to check if there are 2 cards with the same symbol
     matchCheck();
-
     });
-
 }
 
 addListener();
@@ -132,31 +122,23 @@ addListener();
         let firstSelected = $('.selected').first().children().attr('class').split(' ');
         let secondSelected = $('.selected').last().children().attr('class').split(' ');
         if (firstSelected[1] === secondSelected[1]) {
-            console.log('.......... ~ MATCHED ~');
+            console.log('....... ~ MATCHED ~');
             setTimeout(function () {
                 $('.selected').removeClass('selected unmatched');
             }, 500);
             $('.selected').addClass('match');
         } else {
-            console.log('.......... ~ MISSED ~');
+            console.log('....... ~ MISSED ~');
             setTimeout(function () {
                 $('.selected').removeClass('selected');
             }, 500);
         }
         // after 2 clicks the number of moves goes up by 1
         movesCount();
-
         allMatchedCheck();
-
         starRating(moves);
-
-        //finalScore(); // it's here just for testing to see the modal earlier
-
+        //finalScore(); // it's here just for testing to see the modal pop up earlier
         resetTimer(timing);
-
-        //console.log('Number of matches: ' + matched);
-        //console.log('Number of cards: ' + NumberOfCards);
-
     }
 }
 
@@ -176,30 +158,18 @@ function starRating(moves) {
     score = 3;
     stars2 = 12;
     stars1 = 16;
-    stars0 = 20;
-    let text;
   switch(true) {
     case moves>stars2 && moves<=stars1:
-      // text = "star2: vic jak 12";
       $rating.eq(3).removeClass('fa-star');
       score = 2;
       break;
-    case moves>stars1 && moves<=stars0:
-      // text = "star1: vic jak 16";
+    case moves>stars1:
       $rating.eq(2).removeClass('fa-star');
       score = 1;
-      break;
-    case moves>stars0:
-      // text = "star0: vic jak 20";
-      $rating.eq(1).removeClass('fa-star');
-      $('#no-stars').text('No STARS!');
-      score = 0;
       break;
   }
   return score;
 }
-
-//console.log(score);
 
 //========================
 //          MODAL
@@ -212,26 +182,39 @@ function allMatchedCheck() {
     if (matched === NumberOfCards) {
         setTimeout(function () {
                 finalScore();
-                $deck.off("click");
+                $deck.off('click');
+                console.log('....... ~ GAME OVER ~');
             }, 500);
     }
 }
 
-// the modal pops up and disappears
+function refusePlay() {
+    $('.modal').fadeOut();
+    $('.match').removeClass('match').addClass('unmatched');
+    $card.css('display', 'none');
+    $('.score-panel').addClass('displayNone');
+    $('.hidden-repeat').css('display', 'inline-block');
+    console.log('....... ~ GAME REFUSED ~');
+}
+
+// the modal pops up and then disappears (ESC or click)
 function finalScore() {
-    $('#ex1').fadeIn('slow');
-    $('#ex1').on('click keyup', function() {
-        $('#ex1').fadeOut();
+    $('.modal').fadeIn('slow');
+    $('.stars, .restart').addClass('invisible');
+    $('.fa-times-circle-o').on('click', function() {
+        refusePlay();
     });
     // press ESC key
     $(document).keyup(function(e) {
         if (e.keyCode == 27) { // escape key maps to keycode `27`
-        $('#ex1').fadeOut();
+        refusePlay();
         }
     });
+    // the cards beneath the modal are unresponsive and the cursor is an arrow
+    $deck.off('click');
+    $card.css("cursor", "default");
 
     // implementing some stars and text into the modal
-    let $noStar = $('<span class="stars-modal">No stars now!</span>');
     let $oneStar = $('<span class="stars-modal"><i class="fa fa-star"></i></span>');
     let $twoStars = $('<span class="stars-modal"><i class="fa fa-star"></i><i class="fa fa-star"></i></span>');
     let $threeStars = $('<span class="stars-modal"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>');
@@ -240,11 +223,6 @@ function finalScore() {
     let $congrats = $('#congrats');
 
     switch (score) {
-        case 0:
-            $starsInMOdal.append($noStar);
-            $statement.text(`You made it in ${seconds} seconds with ${moves} moves and ${score} stars. Get some rest and come tomorrow!`);
-            $congrats.text('NO PAIN, NO GAIN!');
-            break;
         case 1:
             $starsInMOdal.append($oneStar);
             $statement.text(`You made it in ${seconds} seconds with ${moves} moves and the score of ONLY ${score} star. You can do much better!`);
@@ -263,32 +241,61 @@ function finalScore() {
     }
 }
 
+// in the modal: the player wants to play again and clicks the icon
+function wantPlayAgain() {
+    $('.fa-play-circle').on('click', function() {
+        $('.modal').fadeOut();
+        $('.restart').removeClass('invisible');
+        playingGameAgain();
+        console.log('....... ~ PLAY AGAIN! ~');
+    });
+}
+wantPlayAgain();
+
 //========================
-//     RESTART the game 
+//     RESTART the game
 //========================
 
-$restart.on('click', function () {
+// 1. Restart from the score panel
+$('.score-panel .restart').on('click', function() {
+    afterRestart();
+    playingGameAgain();
+    console.log('Restart from the score panel');
+
+});
+// 2. Restart with the big icon
+$('.container .hidden-repeat').on('click', function() {
+    afterRestart();
+    playingGameAgain();
+    $('.score-panel').removeClass('displayNone');
+    $('.restart').removeClass('invisible');
+    console.log('Restart with the big icon');
+});
+
+function afterRestart() {
+    $('.stars').addClass('invisible');
+    $card.css('display', 'flex');
+    $('.hidden-repeat').css('display', 'none');
+}
+
+// playing the game after restart
+function playingGameAgain() {
 
     $rating.removeClass('fa-star-o').addClass('fa-star');
     $('.match').removeClass('match').addClass('unmatched');
     $('.selected').removeClass('selected'); // when player wants to start again after one card has been clicked
-    $('#no-stars').text('');
     $moves.text(0);
     moves = 0;
     $timer.text(0);
 
     $('#stars-modal').empty(); // in order not to multiply the stars
-
+    $('.modal').fadeOut(); // if the modal is still on
     timingClock();
-
     init();
-
-    matchCheck()
-
-    console.log('.......... ~ IT HAS BEEN RESTARTED ~')
-
+    matchCheck();
+    console.log('....... ~ GAME RESTARTED ~');
     addListener(); // problems with multiplying clicks solved by .off(), line 315
-});
+}
 
 //====================
 //       TIMER
@@ -297,27 +304,30 @@ $restart.on('click', function () {
 
 function timingClock() {
     if (timing) {
+        // time is running, the game is under way
+        clearInterval(timing); // stops the time
         $deck.off('click');
-        clearInterval(timing);
-        seconds = 0;
-
+        seconds = 0; // resets the counter
         $deck.one('click', 'li', function() { 
+            $('.stars').removeClass('invisible');
             $(this).data('clicked', true);
             if($(this).data('clicked')) {
                 timing = setInterval(secondsCounter, 1000);
                 resetTimer(timing);
             }
-            console.log('.......... ~ BEING TIMED AFTER RESTART ~');
+            console.log('....... ~ BEING TIMED AFTER RESTART ~');
         });
 
     } else {
+        // 
         $deck.one('click', 'li', function() { 
+            $('.stars').removeClass('invisible');
             $(this).data('clicked', true);
             if($(this).data('clicked')) {
                 timing = setInterval(secondsCounter, 1000);
                 resetTimer(timing);
             }
-            console.log('.......... ~ STARTED BY CLICK AND BEING TIMED ~');
+            console.log('....... ~ STARTED BY CLICK AND BEING TIMED ~');
         });
     }   
 }     
@@ -330,7 +340,6 @@ function secondsCounter() {
 function resetTimer(timing) {
     if ($('.deck li.match').length === 16) {
             clearInterval(timing);
-
     }
 }
 

@@ -1,22 +1,16 @@
+*, *::before, *::after {
+    box-sizing: inherit;
+    padding: 0;
+    margin: 0;
+}
+
 html {
     box-sizing: border-box;
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: inherit;
-}
-
-html,
-body {
+html, body {
     width: 100%;
     height: 100%;
-}
-
-* {
-	padding: 0;
-	margin: 0;
 }
 
 body {
@@ -25,10 +19,9 @@ body {
 }
 
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    text-align: center;
+    max-width: 660px;
+    margin: 0 auto;
 }
 
 h1 {
@@ -41,47 +34,53 @@ h1 {
 /* **************************** */
 
 .deck {
-	display: flex;
+	display: flex; /*centers the deck on the screen*/
+    position: relative;
     flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: center;
-
-    max-width: 660px;
-    min-height: 680px;
+    justify-content: space-between;
+    max-width: 100%;
+    height: 660px;
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    padding: 32px;
-  	padding-left: -40px;
+    margin: 0 0 3em;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
-    margin: 0 0 3em;
 }
 
 .deck .card {
-	display: flex;
+	display: flex; /*centers the symbol on each card*/
     justify-content: center;
-
-    height: 125px;
-    width: 125px;
-    background: #2e3d49;
-    font-size: 0; /* nezobrazuje se text */
-    color: #ffffff;
-    border-radius: 8px;
-    cursor: pointer;
     align-items: center;
+    flex: 1 1 calc((100% / 4) - 20px);
+    margin: 10px;
+    border-radius: 8px;
+    border: 1px solid white;
+    cursor: pointer;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
 
+.deck .card.unmatched {
+    background: #2e3d49;
+    color: #2e3d49;
+    color: gold;  /*to see the symbols when testing*/
+    font-size: calc(3vw + 3vh);
+    border: 1px solid black;
+}
+
 .deck .card.selected {
-    font-size: 4rem;
+    font-size: calc(3vw + 3vh);
     background: #02b3e4;
     color: #333;
+    border: 1px solid white;
     text-shadow: 1px 1px 2px white, -1px -1px 2px white;
 }
 
 .deck .card.match {
+    font-size: calc(3vw + 3vh);
     cursor: default;
     background: #02ccba;
-    font-size: 4rem;
+    color: #fff;
+    border: 1px solid black;
     text-shadow: 5px 5px 15px black;
 }
 
@@ -89,26 +88,40 @@ h1 {
 /*          SCORE PANEL         */
 /* **************************** */
 
+.fa-star {
+    color: #f7d205;
+    font-size: calc(2vw + 2vh);
+    letter-spacing: 4px;
+    /*border: 1px solid blue;*/
+}
+
+.fa-repeat {
+    font-size: calc(2vw + 2vh);
+    color: black;
+    /*border: 1px solid blue;*/
+}
+
+/* counters of moves and seconds*/
+.timer, .moves {
+    font-size: calc(1.5vw + 1.5vh);
+    color: #1e9395;
+    font-family: monospace, monospace;
+}
+
 .score-panel {
     display: flex;
     align-items: baseline;
-    flex-wrap: wrap;
-
-    position: relative;
-
-    width: calc(100% - (100% - 660px));
+    flex-wrap: nowrap;
+    margin-top: 2vh; 
+    width: 100%;
     margin-bottom: 10px;
     /*border: 1px solid red;*/
 }
 
-#no-stars {
-    color: red;
-    font-weight: bold;
-}
-
-.score-panel .stars {
-    margin-left: 10%;
-}
+.box {
+    flex: 1 1 auto;
+    /*border: 1px solid #ccc;*/
+    }
 
 .score-panel .stars li {
     list-style: none;
@@ -116,40 +129,26 @@ h1 {
     /*border: 1px solid green;*/
 }
 
-
-.fa-star {
-    color: #f7d205;
-    font-size: 1.4em;
-    letter-spacing: 4px;
-    /*border: 1px solid blue;*/
-}
-
-.fa-repeat {
-	font-size: 1.4em;
-	color: black;
-    /*border: 1px solid blue;*/
-}
-
-.score-panel .restart {
+.score-panel .restart, .container .hidden-repeat {
     cursor: pointer;
-    margin: 0 10% 0 auto; 
-    font-size: 30px;
+    transition: transform 0.4s;
     }
 
 .score-panel .restart:hover {
-    /*transform: scale(1.5);*/
+    transform: rotate(40deg);
 }
 
-.timer, .moves {
-    margin-left: 10px;
-    display: inline-block;
-    text-align: right;
-    min-width: 50px;
-    font-weight: bold;
-    font-size: 1.4em;
-    /*border: 1px solid red;*/
+.container .hidden-repeat:hover {
+    transform: rotate(40deg);
 }
 
+.invisible {
+    visibility: hidden;
+}
+
+.displayNone {
+    display: none;
+}
 /* **************************** */
 /*            MODAL             */
 /* **************************** */
@@ -171,43 +170,39 @@ h1 {
     position: absolute;
     display: none;
     z-index: 10;
-    
-    height: 100%; /* bez toho nefungovalo 'top, right' u modal-close */
+    height: 100%; /* 'top, right' at '.modal-close' would not work without it */
     height: 50vh;
     max-width: calc(90% - (100% - 660px));
     box-sizing: border-box;
     text-align: center;
-    padding: 30px 80px;
+    padding: 1rem 3rem;
     border-radius: 10px;
-
     background-color: #eee;
     border: 2px solid #333;
     color: #333;
-
-    /*border: 4px solid orange;*/
 }
 
-.flexbox-modal-items {
+.modal-items {
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-
 	height: 100%;
-	font-size: 1.9rem;
-	/*font-size: 4vw;*/
-	/*border: 1px solid orange;*/
 }
 
 .fa-times-circle-o {
     color: #333;
+}
+.fa-play-circle {
+    color: #1e9395;
+    cursor: pointer;
+    font-size: calc(2vw + 2vh);
 }
 
 .modal-close {
     position: absolute;
     right: 19px;
     top: 10px;
-    font-size: 1.2em;
-    /*color: #333;*/
+    font-size: 1.2rem;
     cursor: pointer;
     text-shadow: 1px 1px 6px gray;
 }
@@ -217,68 +212,34 @@ h1 {
     color: #222;
 }
 
+/* the restart icon in the middle of the deck when the player refuses to carry on */
+.hidden-repeat {
+    display: none;
+    position: absolute;
+    left: calc(50% - (5em/2));
+    bottom: 55%;
+}
+
+.hidden-repeat .fa-repeat {
+    font-size: 5em;
+    z-index: 8;
+    color: #333;
+}
+
 /* ******************************** */
 /*            MEDIA QUERIES         */
 /* ******************************** */
 
-@media screen and (max-width: 660px) {
+@media screen and (max-width: 450px) {
     .deck {
-        width: 100vw;
-        padding: 5px;
+        height: 95vh;
     }
 
-    .card {
-    	margin: 5px;
+    .heading-one {
+        display: none;
     }
 
-    .score-panel {
-    	width: 100%;
-    	max-width: 600px;
-    }
-
-    .modal-section .modal {
-		padding: 10px 30px;
-    }
-
-    .score-panel .restart {
-    	font-size: 40px;
+    .moves, .timer {
+        font-size: calc(2vw + 2vh);
     }
 }
-
-@media screen and (max-width: 500px) {
-	.flexbox-modal-items {
-		font-size: 6vw;
-	}
-
-}
-
-
-@media screen and (max-width: 400px) {
-
-	.score-panel {
-		flex-direction: column;
-		align-items: flex-start;
-		/*padding-left: 30%;*/
-	}
-
-	.score-panel .restart {
-    	margin: 0;
-    }
-
-    .score-panel .stars {
-    margin-left: 0;
-	}
-
-	.box {
-		border: 1px solid #ccc;
-		background-color: #eee;
-		width: 100%;
-		border-radius: 8px;
-		margin-bottom: 3px;
-	}
-}
-
-
-
-
-
