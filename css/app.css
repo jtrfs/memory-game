@@ -14,14 +14,13 @@ html, body {
 }
 
 body {
-    background: #ffffff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
+    background: #fff url('../img/geometry2.png'); /* Background pattern from Subtle Patterns */
     font-family: 'Coda', cursive;
 }
 
 h1 {
     font-family: 'Open Sans', sans-serif;
-    font-weight: 300;
-    /*height: 10%;*/
+    font-weight: 400;
 }
 
 h1, .score-panel {
@@ -33,7 +32,7 @@ h1, .score-panel {
     max-width: 660px;
     margin: 0 auto;
     height: 100%;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
 }
 
 /* **************************** */
@@ -48,7 +47,6 @@ h1, .score-panel {
     max-width: 100%;
     height: calc(95vh - 68px);
     background: linear-gradient(160deg, #02ccba 0%, #aa7ecd 100%);
-    /*margin: 0 0 3em;*/
     padding: 15px;
     border-radius: 10px;
     box-shadow: 12px 15px 20px 0 rgba(46, 61, 73, 0.5);
@@ -61,7 +59,7 @@ h1, .score-panel {
     flex: 1 1 calc((100% / 4) - 20px);
     margin: 10px;
     border-radius: 8px;
-    border: 1px solid white;
+    border: 1px solid #fff;
     cursor: pointer;
     box-shadow: 5px 2px 20px 0 rgba(46, 61, 73, 0.5);
 }
@@ -69,17 +67,17 @@ h1, .score-panel {
 .deck .card.unmatched {
     background: #2e3d49;
     color: #2e3d49;
-    color: gold;  /*to see the symbols when testing*/
+    /*color: gold;*/  /*to see the symbols when testing*/
     font-size: calc(3vw + 3vh);
-    border: 1px solid black;
+    border: 1px solid #000;
 }
 
 .deck .card.selected {
     font-size: calc(3vw + 3vh);
     background: #02b3e4;
     color: #333;
-    border: 1px solid white;
-    text-shadow: 1px 1px 2px white, -1px -1px 2px white;
+    border: 1px solid #fff;
+    text-shadow: 1px 1px 2px #fff, -1px -1px 2px #fff;
 }
 
 .deck .card.match {
@@ -87,8 +85,8 @@ h1, .score-panel {
     cursor: default;
     background: #02ccba;
     color: #fff;
-    border: 1px solid black;
-    text-shadow: 5px 5px 15px black;
+    border: 1px solid #000;
+    text-shadow: 5px 5px 15px #000;
 }
 
 /* **************************** */
@@ -104,7 +102,7 @@ h1, .score-panel {
 
 .fa-repeat {
     font-size: calc(2vw + 2vh);
-    color: black;
+    color: #000;
     /*border: 1px solid blue;*/
 }
 
@@ -121,8 +119,6 @@ h1, .score-panel {
     flex-wrap: nowrap;
     margin: 1vh 0;
     width: 100%;
-    /*height: 10%;*/
-    /*margin-bottom: 10px;*/
     /*border: 1px solid red;*/
 }
 
@@ -244,12 +240,12 @@ h1, .score-panel {
     }
 
     .deck {
-        height: 90vh;
+        height: 93vh;
         padding: 1%;
     }
 
     .deck .card {
-        margin: 1%;
+        margin: 2%;
     }
 
     .heading-one {
